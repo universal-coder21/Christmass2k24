@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2024 Best Videos Collection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1f35 0%, #2a3149 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin: 0;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 20px 20px;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+            gap: 2rem;
+            padding: 20px;
+        }
+
+        .video-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .video-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .video-card video {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .video-info {
+            padding: 1rem;
+        }
+
+        .video-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .video-stats {
+            display: flex;
+            gap: 1rem;
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        .modal video {
+            width: 100%;
+            height: 80vh;
+            object-fit: cover;
+        }
+
+        @media (max-width: 768px) {
+            .video-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>MERRY CHIRSTMAS SPECIAL</h1>
+    </header>
+
+    <div class="container">
+        <div class="video-grid" id="videoGrid"></div>
+    </div>
+
+    <div class="modal" id="videoModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <video id="videoEmbed" controls></video>
+        </div>
+    </div>
+
+    <script>
+        // Sample video data with local video paths
+        const videos = [
+            {
+                id: 1,
+                title: "MERRY CHIRSTMAS",
+                videoUrl: "videos/hUI.mp4"  // Replace with your video file path
+            },
+            {
+                id: 2,
+                title: "Snow Adventure",
+                videoUrl: "videos/vid1.mp4"  // Replace with your video file path
+            },
+            {
+                id: 3,
+                title: "Northern Lights",
+                videoUrl: "videos/vid2.mp4"  // Replace with your video file path
+            },
+            {
+                id: 3,
+                title: "Northern Lights",
+                videoUrl: "videos/vid3.mp4"  // Replace with your video file path
+            },
+            {
+                id: 3,
+                title: "Northern Lights",
+                videoUrl: "videos/vid4.mp4"  // Replace with your video file path
+            },
+
+        ];
+
+        let currentVideo = null;
+
+        // Populate video grid
+        function populateVideos() {
+            const videoGrid = document.getElementById('videoGrid');
+            
+            videos.forEach(video => {
+                const videoCard = document.createElement('div');
+                videoCard.className = 'video-card';
+                videoCard.innerHTML = `
+                    <video src="${video.videoUrl}" class="video-thumbnail"></video>
+                    <div class="video-info">
+                        <h3 class="video-title">${video.title}</h3>
+                    </div>
+                `;
+                
+                videoCard.addEventListener('click', () => openModal(video));
+                videoGrid.appendChild(videoCard);
+            });
+        }
+
+        // Modal functionality
+        const modal = document.getElementById('videoModal');
+        const videoEmbed = document.getElementById('videoEmbed');
+        const closeBtn = document.querySelector('.close-modal');
+
+        function openModal(video) {
+            if (currentVideo) {
+                currentVideo.pause();
+                currentVideo.muted = true;
+            }
+            
+            modal.style.display = 'flex';
+            videoEmbed.src = video.videoUrl;
+            videoEmbed.play();
+            currentVideo = videoEmbed;
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+            videoEmbed.pause();
+            videoEmbed.src = ''; // Clear the video when modal is closed
+            currentVideo = null;
+        }
+
+        closeBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // Initialize
+        populateVideos();
+    </script>
+</body>
+</html>

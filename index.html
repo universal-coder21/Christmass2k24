@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christmas Day Celebration</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        #santaMessage {
+            overflow: overlay;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #ff4d4d, #ff0000);
+            border-radius: 5px;
+        }
+
+        .parallax {
+            transform: translateZ(-1px) scale(2);
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+        }
+
+        @keyframes shine {
+            0% {
+                background-position: -100px;
+            }
+
+            100% {
+                background-position: 200px;
+            }
+        }
+
+        .shine-effect {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shine-effect::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg,
+                    transparent 45%,
+                    rgba(255, 255, 255, 0.1) 50%,
+                    transparent 55%);
+            animation: shine 3s infinite;
+        }
+
+        .card-3d {
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .card-3d:hover .card-content {
+            transform: rotateY(10deg) rotateX(5deg);
+        }
+
+        .snow {
+            animation: snow 10s linear infinite;
+            background: #fff;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 1;
+            filter: blur(1px);
+        }
+
+        .celebration-text {
+            background: linear-gradient(45deg, #ff0000, #ff6b6b, #ffd700);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: gradient 5s ease infinite;
+            background-size: 200% 200%;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .message-banner {
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: slide 20s linear infinite;
+        }
+
+        @keyframes slide {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        .gift-box {
+            transform-style: preserve-3d;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .side-nav {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+        }
+
+        .cursor-glow {
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Add new modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            transform: scale(0.7);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .typing-effect {
+            overflow: hidden;
+            border-right: 2px solid white;
+            white-space: nowrap;
+            margin: 0 auto;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0
+            }
+
+            to {
+                width: 100%
+            }
+        }
+
+        @keyframes blink-caret {
+
+            from,
+            to {
+                border-color: transparent
+            }
+
+            50% {
+                border-color: white
+            }
+        }
+
+        .story-bg {
+            background-size: cover;
+            background-position: center;
+            transition: background-image 1s ease-in-out;
+        }
+
+        .wish-form input,
+        .wish-form textarea {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .wish-form input:focus,
+        .wish-form textarea:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            outline: none;
+        }
+
+        footer {
+            font-family: 'Arial', sans-serif;
+        }
+
+        .bg-gray-900 {
+            background-color: #1a202c;
+        }
+
+        .text-white {
+            color: #ffffff;
+        }
+
+        .py-8 {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        .text-lg {
+            font-size: 1.125rem;
+        }
+
+        .font-semibold {
+            font-weight: 600;
+        }
+
+        .mb-4 {
+            margin-bottom: 1rem;
+        }
+
+        .mb-6 {
+            margin-bottom: 1.5rem;
+        }
+
+        .text-blue-500 {
+            color: #3b82f6;
+        }
+
+        .text-pink-500 {
+            color: #ec4899;
+        }
+
+        .hover\:text-blue-400:hover {
+            color: #60a5fa;
+        }
+
+        .hover\:text-pink-400:hover {
+            color: #f472b6;
+        }
+
+        .transition {
+            transition: all 0.3s ease-in-out;
+        }
+
+        .text-2xl {
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-gradient-to-br from-green-900 via-green-800 to-green-700 min-h-screen overflow-x-hidden perspective-1000">
+    <!-- Cursor Glow Effect -->
+    <div class="cursor-glow"></div>
+
+    <!-- Side Navigation -->
+    <div class="fixed right-4 top-1/2 transform -translate-y-1/2 z-20">
+        <div
+            class="flex flex-col items-center space-y-8 bg-white bg-opacity-10 backdrop-blur-lg py-8 px-2 rounded-full">
+            <a href="#home" class="text-white hover:text-red-400 transition-colors duration-300">•</a>
+            <a href="#wishes" class="text-white hover:text-red-400 transition-colors duration-300">•</a>
+            <a href="#gifts" class="text-white hover:text-red-400 transition-colors duration-300">•</a>
+            <a href="#celebrate" class="text-white hover:text-red-400 transition-colors duration-300">•</a>
+        </div>
+    </div>
+
+    <!-- Christmas Message Banner -->
+    <div class="fixed top-0 w-full bg-red-600 text-white py-2 z-30">
+        <div class="message-banner">
+            <p class="text-center">🎄 Merry Christmas! Today is December 25th - Let's Celebrate Together! 🎅</p>
+        </div>
+    </div>
+
+    <!-- Music Player -->
+    <audio id="bgMusic" loop>
+        <source src="hi.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Music Control with Animation -->
+    <button id="musicToggle"
+        class="fixed top-16 right-4 bg-red-600 hover:bg-red-700 text-white rounded-full p-4 z-10 shadow-lg transform hover:scale-110 transition-all duration-300">
+        <svg class="w-6 h-6 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3">
+            </path>
+        </svg>
+    </button>
+
+    <!-- Hero Section with 3D Effect -->
+    <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden">
+        <div class="text-center z-10 animate__animated animate__fadeIn">
+            <h1 class="text-8xl md:text-9xl font-bold celebration-text mb-8 tracking-wider">
+                Christmas Day
+            </h1>
+            <p class="text-2xl text-white mb-12 max-w-2xl mx-auto">
+                Celebrate the magic of Christmas with joy and wonder
+            </p>
+            <div class="gift-box text-8xl mb-8">🎁</div>
+            <a href="#wishes"
+                class="shine-effect bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-10 rounded-full text-xl transform hover:scale-105 transition-all duration-300 shadow-lg">
+                Start Celebrating
+            </a>
+
+        </div>
+    </section>
+
+    <!-- Interactive Christmas Cards -->
+    <section id="wishes" class="container mx-auto px-4 py-24">
+        <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <div class="card-3d group">
+                <div
+                    class="card-content bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-8 shadow-xl transform transition-all duration-500">
+                    <div class="text-red-400 text-6xl mb-6 float">🎄</div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Share Christmas Wishes</h3>
+                    <p class="text-gray-200">Send personalized holiday greetings to your loved ones</p>
+                    <button onclick="openWishesModal()"
+                        class="mt-6 bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-6 py-2 rounded-full transition-all duration-300">
+                        Send Wishes
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="card-3d group translate-y-8">
+                <div
+                    class="card-content bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-8 shadow-xl transform transition-all duration-500">
+                    <div class="text-red-400 text-6xl mb-6 float">🎅</div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Santa's Message</h3>
+                    <p class="text-gray-200">Receive a special Christmas message from Santa himself</p>
+                    <button
+                        class="mt-6 bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-6 py-2 rounded-full transition-all duration-300">
+                        Read Message
+                    </button>
+                </div>
+            </div>
+
+            <div class="card-3d group">
+                <div
+                    class="card-content bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-8 shadow-xl transform transition-all duration-500">
+                    <div class="text-red-400 text-6xl mb-6 float">⭐</div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Christmas Story</h3>
+                    <p class="text-gray-200">Experience an interactive Christmas tale with magical animations</p>
+                    <button
+                        class="mt-6 bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-6 py-2 rounded-full transition-all duration-300">
+                        Start Story
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <h2 class="text-4xl font-bold text-white text-center mb-12 celebration-text">
+        Enjoy Guys
+    </h2>
+    <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden">
+
+        <div class="text-center z-10 animate__animated animate__fadeIn">
+            <video id="video-player" src="hiiii.mp4" controls loop muted></video>
+        </div>
+    </section>
+
+    <!-- Premium Features Section -->
+    <section id="celebrate" class="bg-white bg-opacity-5 backdrop-blur-lg py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-white text-center mb-12 celebration-text">
+                Christmas Day Celebrations
+            </h2>
+            <div class="grid md:grid-cols-2 gap-12">
+                <div
+                    class="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-8 transform hover:scale-105 transition-all duration-300">
+                    <h3 class="text-2xl font-bold text-white mb-4"> <mark> Park Street </mark> </h3>
+                    <!-- <p class="text-gray-200">Join our global Christmas community in a virtual gift exchange celebration</p> -->
+                    <img src="https://static.tnn.in/thumb/msid-96367582,width-1280,height-720,resizemode-75/96367582.jpg"
+                        alt="image">
+                </div>
+                <div
+                    class="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-8 transform hover:scale-105 transition-all duration-300">
+                    <h3 class="text-2xl font-bold text-white mb-4"><mark>Park street</mark></h3>
+                    <!-- <p class="text-gray-200">Watch and participate in our live Christmas carol concert streaming now</p> -->
+                    <img src="https://i.ytimg.com/vi/lG0K-onmtFc/maxresdefault.jpg" style="object-fit: center center;"
+                        alt="">
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 30px"> 
+            <a href="newIndex.html"
+                class="shine-effect bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-10 rounded-full text-xl transform hover:scale-105 transition-all duration-300 shadow-lg">
+                NEXT PAGE <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+    </section>
+    <!-- Wishes Modal -->
+    <div id="wishesModal" class="modal">
+        <div class="modal-content bg-green-900 bg-opacity-95 p-8 rounded-2xl max-w-lg mx-auto my-auto">
+            <div class="text-right mb-4">
+                <button onclick="closeModal('wishesModal')" class="text-white hover:text-red-400">✕</button>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-6 text-center">Send Christmas Wishes</h3>
+            <form class="wish-form space-y-4" action="https://formspree.io/f/xblllznn" method="POST">
+                <div>
+                    <input type="text" name="name" placeholder="Your Name" class="w-full p-3 rounded-lg" required>
+                </div>
+                <div>
+                    <!-- Removed email input, as it's not needed for this form -->
+                </div>
+                <div>
+                    <textarea name="message" placeholder="Your Christmas Message" class="w-full p-3 rounded-lg h-32"
+                        required></textarea>
+                </div>
+                <div class="text-center">
+                    <button type="submit"
+                        class="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-full transition-all duration-300">
+                        Send Wishes ✨
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Santa's Message Modal -->
+    <div id="santaModal" class="modal">
+        <div class="modal-content bg-red-900 bg-opacity-95 p-8 rounded-2xl max-w-lg mx-auto my-auto">
+            <div class="text-right mb-4">
+                <button onclick="closeModal('santaModal')" class="text-white hover:text-red-400">✕</button>
+            </div>
+            <div class="text-center mb-6">
+                <div class="text-6xl mb-4">🎅</div>
+                <h3 class="text-2xl font-bold text-white mb-4">Message from Santa</h3>
+            </div>
+            <div id="santaMessage" class="text-white text-lg typing-effect"></div>
+        </div>
+    </div>
+
+    <!-- Story Modal -->
+    <div id="storyModal" class="modal">
+        <div class="modal-content bg-green-900 bg-opacity-95 p-8 rounded-2xl max-w-2xl mx-auto my-auto story-bg">
+            <div class="text-right mb-4">
+                <button onclick="closeModal('storyModal')" class="text-white hover:text-red-400">✕</button>
+            </div>
+            <div class="text-center mb-6">
+                <h3 class="text-3xl font-bold text-white mb-4">The Magic of Christmas</h3>
+            </div>
+            <div id="storyContent" class="text-white text-lg mb-6"></div>
+            <div class="text-center">
+                <button onclick="nextStoryPage()"
+                    class="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-full transition-all duration-300">
+                    Continue Story →
+                </button>
+            </div>
+        </div>
+    </div>
+    <footer class="bg-gray-900 text-white py-8">
+        <div class="container mx-auto text-center">
+            <p class="text-lg font-semibold mb-4">
+                &copy; 2024 Your Website Name. All Rights Reserved.
+            </p>
+            <p class="text-sm mb-6">
+                Designed with ❤️ by Your Name
+            </p>
+            <div class="flex justify-center space-x-6">
+                <a href="https://www.facebook.com/profile.php?id=100094602130847" target="_blank"
+                    class="text-blue-500 hover:text-blue-400 transition duration-300">
+                    <i class="fab fa-facebook-f text-2xl"></i>
+                </a>
+                <a href="https://www.instagram.com/javascript___2023" target="_blank"
+                    class="text-pink-500 hover:text-pink-400 transition duration-300">
+                    <i class="fab fa-instagram text-2xl"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script>
+        // Move event listeners to DOMContentLoaded to ensure elements exist
+        document.addEventListener('DOMContentLoaded', function () {
+            // Fix button event listeners
+            const wishesButton = document.querySelector('.card-content button');
+            if (wishesButton) {
+                wishesButton.onclick = openWishesModal;
+            }
+
+            const santaButton = document.querySelectorAll('.card-content')[1].querySelector('button');
+            if (santaButton) {
+                santaButton.onclick = openSantaMessage;
+            }
+
+            const storyButton = document.querySelectorAll('.card-content')[2].querySelector('button');
+            if (storyButton) {
+                storyButton.onclick = startStory;
+            }
+
+            // Initialize other event listeners
+            setupCursorGlow();
+            setupMusicControl();
+            setupSmoothScroll();
+            setupIntersectionObserver();
+            startSnowEffect();
+        });
+
+        // Cursor glow effect
+        function setupCursorGlow() {
+            document.addEventListener('mousemove', (e) => {
+                const cursor = document.querySelector('.cursor-glow');
+                if (cursor) {
+                    cursor.style.left = e.clientX - 10 + 'px';
+                    cursor.style.top = e.clientY - 10 + 'px';
+                }
+            });
+        }
+
+        // Snow effect
+        function startSnowEffect() {
+            setInterval(createSnow, 200);
+        }
+
+        function createSnow() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snow');
+            const size = Math.random() * 8 + 2;
+            snowflake.style.width = size + 'px';
+            snowflake.style.height = size + 'px';
+            snowflake.style.left = Math.random() * 100 + '%';
+            snowflake.style.opacity = Math.random() * 0.6 + 0.4;
+            document.body.appendChild(snowflake);
+
+            setTimeout(() => {
+                snowflake.remove();
+            }, 10000);
+        }
+
+        // Music control
+        function setupMusicControl() {
+            const music = document.getElementById('bgMusic');
+            const musicToggle = document.getElementById('musicToggle');
+            let isPlaying = false;
+
+            if (musicToggle && music) {
+                musicToggle.addEventListener('click', () => {
+                    if (isPlaying) {
+                        music.pause();
+                        musicToggle.classList.remove('bg-red-700', 'scale-110');
+                        musicToggle.classList.add('bg-red-600');
+                    } else {
+                        music.play();
+                        musicToggle.classList.remove('bg-red-600');
+                        musicToggle.classList.add('bg-red-700', 'scale-110');
+                    }
+                    isPlaying = !isPlaying;
+                });
+            }
+        }
+
+        // Smooth scroll
+        function setupSmoothScroll() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        }
+
+        // Intersection Observer
+        function setupIntersectionObserver() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: "0px"
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate__fadeIn');
+                        entry.target.style.opacity = 1;
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('section').forEach(section => {
+                observer.observe(section);
+            });
+        }
+
+        // Modal handling
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('active');
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('active');
+            }
+        }
+
+        // Wishes functionality
+        function openWishesModal() {
+            openModal('wishesModal');
+        }
+
+        // Santa's Message functionality
+        function openSantaMessage() {
+            openModal('santaModal');
+            const messageElement = document.getElementById('santaMessage');
+            if (!messageElement) return;
+
+            messageElement.innerHTML = '';
+            const message = "Ho ho ho! Merry Christmas! 🎄 I hope this special day brings joy and wonder to your heart. Remember, the true magic of Christmas lies in the kindness we share with others. May your day be filled with love, laughter, and precious moments with loved ones. Keep spreading the Christmas spirit! With love, Santa Claus 🎅";
+
+            let i = 0;
+            function typeWriter() {
+                if (i < message.length) {
+                    messageElement.innerHTML += message.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 50);
+                }
+            }
+            typeWriter();
+        }
+
+        // Story functionality
+        let currentPage = 0;
+        const storyPages = [
+            {
+                text: "Once upon a Christmas Eve, in a small town covered in sparkling snow, a magical adventure was about to begin...",
+                background: "/api/placeholder/800/400"
+            },
+            {
+                text: "As the clock struck midnight, all the Christmas decorations suddenly came to life, twinkling with an enchanted glow...",
+                background: "/api/placeholder/800/400"
+            },
+            {
+                text: "The Christmas tree ornaments began to dance, and a tiny elf appeared with an important mission...",
+                background: "/api/placeholder/800/400"
+            }
+        ];
+
+        function startStory() {
+            currentPage = 0;
+            openModal('storyModal');
+            updateStoryPage();
+        }
+
+        function nextStoryPage() {
+            currentPage++;
+            if (currentPage >= storyPages.length) {
+                currentPage = 0;
+                closeModal('storyModal');
+                return;
+            }
+            updateStoryPage();
+        }
+
+        function updateStoryPage() {
+            const storyContent = document.getElementById('storyContent');
+            const modalContent = document.querySelector('#storyModal .modal-content');
+
+            if (!storyContent || !modalContent) return;
+
+            storyContent.style.opacity = 0;
+            setTimeout(() => {
+                storyContent.innerHTML = storyPages[currentPage].text;
+                modalContent.style.backgroundImage = `url(${storyPages[currentPage].background})`;
+                storyContent.style.opacity = 1;
+            }, 500);
+        }
+
+        const videoPlayer = document.getElementById('video-player');
+        const backgroundMusic = document.getElementById('bgMusic');
+
+        // Intersection Observer for video visibility
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        // Video is in view: Play the video and pause background music
+                        videoPlayer.play();
+                        if (!backgroundMusic.paused) {
+                            backgroundMusic.pause();
+                        }
+                    } else {
+                        // Video is out of view: Pause the video and play background music
+                        videoPlayer.pause();
+                        if (backgroundMusic.paused) {
+                            backgroundMusic.play();
+                        }
+                    }
+                });
+            },
+            {
+                threshold: 0.5, // Trigger when 50% of the video is in view
+            }
+        );
+
+        // Observe the video element
+        observer.observe(videoPlayer);
+    </script>
+</body>
+
+</html>
